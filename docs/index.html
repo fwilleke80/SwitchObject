@@ -1,254 +1,139 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Switch Object Help</title>
-	<style type="text/css">
-<!--
-body
-{
-	background-color: #F3F0EB;
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12px;
+<html>
+	<head>
+		<title>SwitchObject</title>
+		<meta name="keywords" content="SwitchObject,plugin,cinema,C++,C,free,opensource,parameters,usage,help">
+		<style>
+		<!--
+body {
+	background-color: #EFE0CC;
+	color: black;
+	font-family: Geneva, Helvetica, Arial, sans-serif;
+	font-size: 0.75em;
 	padding: 0px;
-	margin-top: 20px;
-	margin-right: 3%;
-	margin-bottom: 50px;
-	margin-left: 3%;
+	margin: 1em 1em 1em 1em;
 }
 
-p
-{
-	text-align: justify;
-	padding: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 0px;
+img {
+	border: 1px solid black;
 }
 
-p.caption
-{
-	font-size: 9px;
+div.maincontent {
+	background-color: white;
+	padding: 1em	;
+	margin: auto;
+	border: 1px dashed black;
+	-webkit-box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	max-width: 1024px;
+}
+
+div.pane {
+	padding: 0.5em;
+	background-color: #F5F5F5;
+	border: 1px solid #AAAAAA;
+	-webkit-box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	-moz-box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.5);
+	margin: 0px 0px 1.5em 1.5em;
+	width: 320px;	
+}
+
+div.indent {
+	margin-left: 1em;
+}
+
+h1 {
+	font-size: 2.5em;
 	font-weight: 700;
-	text-align: left;
-	padding: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 5px;
-	margin-left: 0px;
+	width: 100%;
+	border-width: 0px 0px 1px 0px;
+	border-style: none none dotted none;
+	border-color: black;
+	padding: 5px 0px 0px 0px;
+	margin: 0px 0px 1em 0px;
 }
 
-p.toplink
-{
-	font-size: 10px;
-	margin-top: 10px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 0px;
-	text-align: right;
-	clear: both;
-}
-
-h1
-{
-	background-color: #E7E1DC;
-	font-size: 24px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 0px;
+h2 {
+	font-size: 14px;
 	font-weight: 700;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	border-bottom-style: dotted;
-	border-top-color: #000000;
-	border-right-color: #000000;
-	border-bottom-color: #000000;
-	border-left-color: #000000;
-	padding-top: 5px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-}
-
-h2
-{
-	background-color: #E7E1DC;
-	font-size: 18px;
-	margin-top: 35px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 0px;
-	font-weight: 700;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	border-bottom-style: dotted;
-	border-top-color: #000000;
-	border-right-color: #000000;
-	border-bottom-color: #000000;
-	border-left-color: #000000;
-	padding-top: 5px;
-	padding-right: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
+	width: 50%;
+	border-width: 0px 0px 1px 0px;
+	border-style: none none dotted none;
+	border-color: darkgray;
+	padding: 5px 0px 0px 0px;
+	margin: 0px 0px 1em 0px;
 }
 
 h3
 {
 	font-size: 14px;
-	margin-top: 10px;
-	margin-right: 0px;
-	margin-bottom: 5px;
-	margin-left: 0px;
 	font-weight: 700;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	border-bottom-style: dotted;
-	border-top-color: #000000;
-	border-right-color: #000000;
-	border-bottom-color: #000000;
-	border-left-color: #000000;
-	width:25%;
+	width: 50%;
+	padding: 5px 0px 0px 0px;
+	margin: 0.75em 0px 0.5em 0px;
 }
 
 h4
 {
-	margin-top: 7px;
-	margin-right: 0px;
-	margin-bottom: 2px;
-	margin-left: 0px;
-	font-weight: 900;
-	font-size: 13px;
-}
-
-h5
-{
-	margin-top: 7px;
-	margin-right: 0px;
-	margin-bottom: 2px;
-	margin-left: 0px;
-	font-weight: 900;
 	font-size: 12px;
-}
-
-ul
-{
-	list-style-position: outside;
-	list-style-type: square;
-	padding: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 15px;
-}
-
-pre.timestamp
-{
 	font-weight: 700;
-	font-size: 12px;
-	padding: 0px;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	margin-left: 0px;
+	width: 50%;
+	padding: 5px 0px 0px 0px;
+	margin: 0.75em 0px 0.25em 0px;
+}
+
+p {
+	margin: 0px 0px 0.5em 0px;
+}
+
+a {
+	color: #8F806C;
+}
+
+a:hover {
+	color: #DD2200;
+}
+
+a:visited {
+	color: #6F604C;
+}
+
+.floatright {
 	float: right;
 }
 
-div.background
-{
-	background-color: #FFFFFF;
-	padding: 15px;	
+#slightlybigger {
+	font-size: 1.25em;
 }
+		-->
+		</style>
+	</head>
 
-div.chapter
-{
-	clear: both;
-	margin: 0px;
-	padding: 0px;	
-}
+	<body>
+		<div class="maincontent">
+			<h1>SwitchObject</h1>
 
-div.sideimg
-{
-	margin-top: 10px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	margin-left: 20px;
-	clear: both;
-	float: right;
-	font-size: 10px;
-}
+			<div class="floatright pane">
+				<p id="slightlybigger">SwitchObject</p>
+				<p>Get the sourcecode:<br /><a href="https://github.com/fwilleke80/SwitchObject">github.com/fwilleke80/SwitchObject</a></p>
+				<p>Download release:<br /><a href="https://github.com/fwilleke80/SwitchObject/releases">github.com/fwilleke80/SwitchObject/releases</a></p>
+				<p>Licensed under:<br /><a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPL 3.0</a></p>
+				<!--<a href="switchobject.jpg"><img src="pointprojector.jpg" width="100%" /></a>-->
+			</div>
 
-caption.caption
-{
-	font-size: 9px;
-	font-weight: 700;
-	text-align: left;
-	padding: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 5px;
-	margin-left: 0px;
-}
+      <p>Sometimes you want to create different versions of an object or scene. Like a room with different sets of curtains, a truck with different trailers or just alternative light setups for a scene (e.g. day, evening, night).</p>
+      <p>Of course, you could do this with XPresso, creating User Data entries for all your options, connecting lots of nodes to check for the parameters and the visibility values of all lots of hierarchy branches... and if you added another curtain to your room or another trailer to your truck, you would have to worry about wiring the new objects, too, and updating all the User Data entries.</p>
+      <p><i>Switch Object</i> makes it really easy for you: No Xpresso, no User Data, no takes, just straight forward switching of object groups.</p>
+		</div>
+	</body>
+</html>
 
-img
-{
-	border-top-width: 1px;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-top-style: solid;
-	border-right-style: solid;
-	border-bottom-style: solid;
-	border-left-style: solid;
-}
-
-img.thumb
-{
-	width: 200px;
-}
-
-table.gallery
-{
-	border-spacing: 0px;
-	padding: 0px;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 0px;
-	border-left-width: 0px;
-	margin-top: 15px;
-	margin-right: 0px;
-	margin-bottom: 15px;
-	margin-left: 0px;
-}
-
-tr.gallery
-{
-	margin: 0px;
-	padding: 0px;
-}
-
-td.gallery
-{
-	margin: 0px;
-	padding: 5px;
-	vertical-align: top;
-}
--->
-	</style>
-</head>
-
+<!--
 <body>
 	<a name="top" id="top"></a>
 	<div class="background">
 		<div class="chapter">
-			<p><pre class="timestamp">Last update: <!-- #BeginDate format:IS1m -->2011-03-08  14:42<!-- #EndDate --></pre></p>
 			<h1>Switch Object Help</h1>
 			<p>A short documentation for the Switch Object.</p>
 			<h3>Contents</h3>
@@ -310,3 +195,4 @@ td.gallery
 	</div>
 </body>
 </html>
+-->
