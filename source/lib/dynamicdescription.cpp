@@ -29,6 +29,29 @@ Bool DescriptionAddCycle(Description *description, Int32 id, Int32 groupId, cons
 }
 
 
+Bool DescriptionAddCycleWithIcons(Description *description, Int32 id, Int32 groupId, const String &name, const BaseContainer &cycleItems, const BaseContainer &cycleIcons, Int32 defaultValue)
+{
+	if (!description)
+		return false;
+	
+	const DescID *singleId = description->GetSingleDescID();
+	
+	if (!singleId || IsSingleID(id, singleId))
+	{
+		BaseContainer params = GetCustomDataTypeDefault(DTYPE_LONG);
+		params.SetString(DESC_NAME, name);
+		params.SetInt32(DESC_DEFAULT, defaultValue);
+		params.SetInt32(DESC_ANIMATE, DESC_ANIMATE_ON);
+		params.SetInt32(DESC_CUSTOMGUI, CUSTOMGUI_CYCLE);
+		params.SetContainer(DESC_CYCLE, cycleItems);
+		params.SetContainer(DESC_CYCLEICONS, cycleIcons);
+		
+		return description->SetParameter(DescLevel(id, DTYPE_LONG, 0), params, groupId);
+	}
+	return true;
+}
+
+
 Bool DescriptionAddCheckbox(Description *description, Int32 id, Int32 groupId, const String &name, Bool defaultValue)
 {
 	if (!description)
