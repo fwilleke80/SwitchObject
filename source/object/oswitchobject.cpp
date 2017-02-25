@@ -134,7 +134,6 @@ BaseObject *SwitchObject::GetGroupParent(GeListNode *node)
 }
 
 
-// Initialize settings
 Bool SwitchObject::Init(GeListNode *node)
 {
 	BaseObject *op = static_cast<BaseObject*>(node);
@@ -152,10 +151,8 @@ Bool SwitchObject::Init(GeListNode *node)
 }
 
 
-// Build the dynamic descriptions (it's only a long cycle)
 Bool SwitchObject::GetDDescription(GeListNode *node, Description *description, DESCFLAGS_DESC &flags)
 {
-	// SWITCH_DROPDOWN
 	if (!description->LoadDescription(node->GetType()))
 		return false;
 
@@ -196,39 +193,44 @@ Bool SwitchObject::Message(GeListNode *node, Int32 type, void *data)
 	if (!parent)
 		return false;
 	
-	if (BuildObjList(parent) > 0)
+	if (type == MSG_DESCRIPTION_POSTSETPARAMETER)
 	{
-		if (!((BaseObject*)node)->GetDeformMode()) return true;
-
-		Int32 index = bc->GetInt32(SWITCH_DROPDOWN);
-
-		if (bc->GetBool(SWITCH_INHERITNAME))
+		DescriptionPostSetValue *msgData = (DescriptionPostSetValue*)data;
+		if (!data)
+			return false;
+		
+		// Dropdown value has been changed
+		if (*(msgData->descid) == SWITCH_DROPDOWN)
 		{
-			String name = bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ));
-			((BaseObject*)node)->SetName(name + " (" + m_objlist[index] + ")");
+			// TODO: Building the list should be done somewhere else
+			if (BuildObjList(parent) > 0)
+			{
+				if (!op->GetDeformMode())
+					return true;
+				
+				Int32 objectIndex = bc->GetInt32(SWITCH_DROPDOWN);
+				
+				if (bc->GetBool(SWITCH_INHERITNAME))
+					op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)) + " (" + m_objlist[objectIndex] + ")");
+				
+				SwitchObjects(parent, objectIndex);
+			}
+			else
+			{
+				if (bc->GetBool(SWITCH_INHERITNAME))
+					op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)));
+				
+				bc->SetInt32(SWITCH_DROPDOWN, 0);
+			}
 		}
-
-		SwitchObjects(parent, index);
 	}
-	else
-	{
-		if (bc->GetBool(SWITCH_INHERITNAME))
-		{
-			String name = bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ));
-			((BaseObject*)node)->SetName(name);
-		}
-
-		bc->SetInt32(SWITCH_DROPDOWN, 0);
-	}
-
+	
 	return SUPER::Message(node, type, data);
 }
 
 
-// Disable parameters
 Bool SwitchObject::GetDEnabling(GeListNode *node, const DescID &id, const GeData &t_data, DESCFLAGS_ENABLE flags, const BaseContainer *itemdesc)
 {
-	// Enable and disable ('gray out') user controls
 	BaseContainer *data = static_cast<BaseObject*>(node)->GetDataInstance();
 	if (!data)
 		return false;
@@ -249,9 +251,6 @@ Bool SwitchObject::GetDEnabling(GeListNode *node, const DescID &id, const GeData
 }
 
 
-////////////////////////////////////////////////////////////////////
-// Register function
-////////////////////////////////////////////////////////////////////
 Bool RegisterSwitchObject()
 {
 	return RegisterObjectPlugin(ID_OSWITCHOBJ, GeLoadString(IDS_OSWITCHOBJ), OBJECT_GENERATOR, SwitchObject::Alloc, "oswitchobject", AutoBitmap("oswitchobject.tif"), 0);
