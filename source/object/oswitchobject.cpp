@@ -13,6 +13,17 @@ class SwitchObject : public ObjectData
 {
 	INSTANCEOF(SwitchObject, ObjectData);
 
+public:
+	virtual Bool Init(GeListNode *node);
+	virtual Bool GetDDescription(GeListNode *node, Description *description, DESCFLAGS_DESC &flags);
+	virtual Bool GetDEnabling(GeListNode *node, const DescID &id, const GeData &t_data, DESCFLAGS_ENABLE flags, const BaseContainer *itemdesc);
+	virtual Bool Message(GeListNode *node, Int32 type, void *data);
+	
+	static NodeData *Alloc()
+	{
+		return NewObjClear(SwitchObject);
+	}
+	
 private:
 	/// Iterate all children of 'parent' and store their names in m_objlist
 	/// @param[in] parent The parent object whose children should be iterated
@@ -34,17 +45,6 @@ private:
 	/// @param[in] node The SwitchObject node
 	/// @return The BaseObject that's the parent of the desired object group; or nullptr if an error occurred
 	BaseObject *GetGroupParent(GeListNode *node);
-	
-public:
-	virtual Bool Init(GeListNode *node);
-	virtual Bool GetDDescription(GeListNode *node, Description *description, DESCFLAGS_DESC &flags);
-	virtual Bool GetDEnabling(GeListNode *node, const DescID &id, const GeData &t_data, DESCFLAGS_ENABLE flags, const BaseContainer *itemdesc);
-	virtual Bool Message(GeListNode *node, Int32 type, void *data);
-	
-	static NodeData *Alloc()
-	{
-		return NewObjClear(SwitchObject);
-	}
 	
 private:
 	GeDynamicArray<String> m_objlist;		/// Stores a list with names of objects in the group.
@@ -159,11 +159,10 @@ Bool SwitchObject::GetDDescription(GeListNode *node, Description *description, D
 	if (!description->LoadDescription(node->GetType()))
 		return false;
 
-	BaseContainer cycleItems;
-	
 	BaseContainer acceptlink;
 	acceptlink.SetInt32(Obase, 1);
 
+	BaseContainer cycleItems;
 	
 	if (m_objlist.Content())
 		cycleItems = ObjList2Container();
