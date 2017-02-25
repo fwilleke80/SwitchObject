@@ -1,6 +1,9 @@
-/*.dylib
-/*.xcsettings
-/*.xcscheme
-/*.xcuserstate
-/*.xcworkspacedata
-/*.plist
+*.dylib
+*.xcsettings
+*.xcscheme
+*.xcuserstate
+*.xcworkspacedata
+*.plist
+
+*.cdl64
+
