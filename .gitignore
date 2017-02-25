@@ -8,4 +8,6 @@
 *.cdl64
 *.sdf
 *.pdb
+*.ilk
+*.vcxproj.user
 x64_Debug
