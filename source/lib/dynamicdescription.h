@@ -6,26 +6,16 @@
 /// Check if 'id' is a single id
 Bool IsSingleID(const DescID &id, const DescID *singleid);
 
-/// Add a new LONG CYCLE element to the description
+/// Add a new LONG CYCLE element to the description. Cycle items may have icons.
 /// @param[in] description The description that should receive the new element
 /// @param[in] id The resource ID of the new element (make sure it doesn't conflict with an existing ID)
 /// @param[in] groupId The resource ID of the attribute group the new element should be added to
 /// @param[in] name The name of the element
 /// @param[in] cycleItems BaseContainer with names of cycle items
+/// @param[in] cycleIcons Optional pointer to BaseContainer with IDs of cycle items' icons
 /// @param[in] defaultValue The index of the cycle item that should be selected by default
 /// @return False if an error occurred, otherwise true
-Bool DescriptionAddCycle(Description *description, Int32 id, Int32 groupId, const String &name, const BaseContainer &cycleItems, Int32 defaultValue = 0);
-
-/// Add a new LONG CYCLE element with icons to the description
-/// @param[in] description The description that should receive the new element
-/// @param[in] id The resource ID of the new element (make sure it doesn't conflict with an existing ID)
-/// @param[in] groupId The resource ID of the attribute group the new element should be added to
-/// @param[in] name The name of the element
-/// @param[in] cycleItems BaseContainer with names of cycle items
-/// @param[in] cycleIcons BaseContainer with IDs of cycle items' icons
-/// @param[in] defaultValue The index of the cycle item that should be selected by default
-/// @return False if an error occurred, otherwise true
-Bool DescriptionAddCycleWithIcons(Description *description, Int32 id, Int32 groupId, const String &name, const BaseContainer &cycleItems, const BaseContainer &cycleIcons, Int32 defaultValue = 0);
+Bool DescriptionAddCycle(Description *description, Int32 id, Int32 groupId, const String &name, const BaseContainer &cycleItems, BaseContainer *cycleIcons = nullptr, Int32 defaultValue = 0);
 
 /// Add a new LONG CYCLE element to the description
 /// @param[in] description The description that should receive the new element
