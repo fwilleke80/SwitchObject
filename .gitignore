@@ -6,4 +6,5 @@
 *.plist
 
 *.cdl64
-
+*.sdf
+*.pdb
