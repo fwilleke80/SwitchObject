@@ -1,6 +1,6 @@
 # SwitchObject
 
-An object plugin that allows switching visibility of object groups. This allows for easily configurable setups, like exchanging tires on a car, pickups on a guitar, et cetera.
+An object plugin that allows switching visibility of object groups. This allows for easily configurable setups, like exchanging tires on a car, pickups on a guitar, houses with different roofs, differnt sets of curtains in a room, et cetera, you get the idea.
 
 Aspiring plugin developers can learn - amongst other things - the following from the code:
 * Object plugins derived from `class ObjectData`
