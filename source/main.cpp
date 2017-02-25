@@ -1,6 +1,6 @@
-// Starts the plugin registration
 #include "c4d.h"
 #include "main.h"
+
 
 #define PLUGIN_VERSION	String("Switch Object 0.6")
 
