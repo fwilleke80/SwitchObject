@@ -9,6 +9,22 @@
 const Int32 ID_OSWITCHOBJ = 1026830;
 
 
+struct ObjectListItem
+{
+	String name;
+	Int32 id;
+	
+	ObjectListItem() : id(0)
+	{}
+	
+	ObjectListItem(BaseObject &op)
+	{
+		name = op.GetName();
+		id = op.GetType();
+	}
+};
+
+
 class SwitchObject : public ObjectData
 {
 	INSTANCEOF(SwitchObject, ObjectData);
@@ -30,9 +46,10 @@ private:
 	/// @return The number of objects in the list, or NOTOK if an error occurred
 	Int32 BuildObjList(BaseObject *parent);
 	
-	/// Iterates the stored list with object names and puts them into a BaseContainer
+	/// Iterates the stored list with objects and puts their names or ids into a BaseContainer
+	/// @param[in] names If false, the container will receive the ids of the objects. If true, the container gets the objects' names.
 	/// @return The BaseContainer containing the object names
-	BaseContainer ObjList2Container();
+	BaseContainer ObjList2Container(Bool names);
 	
 	/// Iterate all children of 'parent'. The object with index 'index' will become visible, all other are hidden.
 	/// @param[in] parent The parent object whose children should be iterated
@@ -44,10 +61,10 @@ private:
 	/// This is either the SwitchObject itself, or - in case something is linked in the group linkbox - the object linked in the group linkbox
 	/// @param[in] node The SwitchObject node
 	/// @return The BaseObject that's the parent of the desired object group; or nullptr if an error occurred
-	BaseObject *GetGroupParent(GeListNode *node);
+	BaseObject *GetGroupParent(GeListNode *node) const;
 	
 private:
-	GeDynamicArray<String> m_objlist;		/// Stores a list with names of objects in the group.
+	GeDynamicArray<ObjectListItem> m_objlist;		/// Stores a list with names of objects in the group.
 };
 
 
@@ -62,7 +79,7 @@ Int32 SwitchObject::BuildObjList(BaseObject *parent)
 	while (op)
 	{
 		count++;
-		m_objlist.Push(op->GetName());
+		m_objlist.Push(ObjectListItem(*op));
 		op = op->GetNext();
 	}
 
@@ -70,7 +87,7 @@ Int32 SwitchObject::BuildObjList(BaseObject *parent)
 }
 
 
-BaseContainer SwitchObject::ObjList2Container()
+BaseContainer SwitchObject::ObjList2Container(Bool names)
 {
 	BaseContainer result;
 	
@@ -81,7 +98,12 @@ BaseContainer SwitchObject::ObjList2Container()
 	else
 	{
 		for (Int32 i = 0; i < m_objlist.GetCount(); i++)
-			result.SetString(i, m_objlist[i]);
+		{
+			if (names)
+				result.SetString(i, m_objlist[i].name);
+			else
+				result.SetInt32(i, m_objlist[i].id);
+		}
 	}
 
 	return result;
@@ -90,7 +112,7 @@ BaseContainer SwitchObject::ObjList2Container()
 
 Bool SwitchObject::SwitchObjects(BaseObject *parent, Int32 index)
 {
-	if (!m_objlist.Content() || index < 0 || index >= m_objlist.GetCount() || !parent || !parent->GetDown())
+	if (!m_objlist.Content() || index < 0 || index >= m_objlist.GetCount() || !parent)
 		return false;
 
 	Int32 i = 0;
@@ -116,13 +138,18 @@ Bool SwitchObject::SwitchObjects(BaseObject *parent, Int32 index)
 }
 
 
-BaseObject *SwitchObject::GetGroupParent(GeListNode *node)
+BaseObject *SwitchObject::GetGroupParent(GeListNode *node) const
 {
+	if (!node)
+		return nullptr;
+	
+	BaseObject *op = static_cast<BaseObject*>(node);
+
 	BaseDocument *doc = node->GetDocument();
 	if (!doc)
 		return nullptr;
-
-	BaseContainer *bc = static_cast<BaseObject*>(node)->GetDataInstance();
+	
+	BaseContainer *bc = op->GetDataInstance();
 	if (!bc)
 		return nullptr;
 
@@ -160,14 +187,20 @@ Bool SwitchObject::GetDDescription(GeListNode *node, Description *description, D
 	acceptlink.SetInt32(Obase, 1);
 
 	BaseContainer cycleItems;
+	BaseContainer cycleIcons;
 	
 	if (m_objlist.Content())
-		cycleItems = ObjList2Container();
+	{
+		cycleItems = ObjList2Container(true);
+		cycleIcons = ObjList2Container(false);
+	}
 	else
+	{
 		cycleItems.SetString(0, GeLoadString(IDS_SWITCH_NONE));
+	}
 
 	// Add description elements
-	DescriptionAddCycle(description, SWITCH_DROPDOWN, ID_OBJECTPROPERTIES, GeLoadString(IDS_SWITCH_DROPDOWN), cycleItems);
+	DescriptionAddCycle(description, SWITCH_DROPDOWN, ID_OBJECTPROPERTIES, GeLoadString(IDS_SWITCH_DROPDOWN), cycleItems, &cycleIcons);
 	DescriptionAddCheckbox(description, SWITCH_INHERITNAME, ID_OBJECTPROPERTIES, GeLoadString(IDS_SWITCH_INHERITNAME), true);
 	DescriptionAddString(description, SWITCH_OBJNAME, ID_OBJECTPROPERTIES, GeLoadString(IDS_SWITCH_OBJNAME), GeLoadString(IDS_OSWITCHOBJ));
 	DescriptionAddLink(description, SWITCH_REMOTELINK, ID_OBJECTPROPERTIES, GeLoadString(IDS_SWITCH_REMOTELINK), acceptlink);
@@ -183,6 +216,8 @@ Bool SwitchObject::Message(GeListNode *node, Int32 type, void *data)
 	if (!node)
 		return false;
 	
+	GePrint(String::IntToString(type));
+	
 	BaseObject *op = static_cast<BaseObject*>(node);
 
 	BaseContainer *bc = op->GetDataInstance();
@@ -193,35 +228,50 @@ Bool SwitchObject::Message(GeListNode *node, Int32 type, void *data)
 	if (!parent)
 		return false;
 	
-	if (type == MSG_DESCRIPTION_POSTSETPARAMETER)
+	switch (type)
 	{
-		DescriptionPostSetValue *msgData = (DescriptionPostSetValue*)data;
-		if (!data)
-			return false;
-		
-		// Dropdown value has been changed
-		if (*(msgData->descid) == SWITCH_DROPDOWN)
+		case MSG_GETCUSTOMICON:
 		{
-			// TODO: Building the list should be done somewhere else
-			if (BuildObjList(parent) > 0)
+			BuildObjList(parent);
+			break;
+		}
+		case MSG_DESCRIPTION_POSTSETPARAMETER:
+		{
+			DescriptionPostSetValue *msgData = (DescriptionPostSetValue*)data;
+			if (!data)
+				return false;
+			
+			// Dropdown value has been changed
+			if (*(msgData->descid) == SWITCH_DROPDOWN)
 			{
-				if (!op->GetDeformMode())
-					return true;
-				
-				Int32 objectIndex = bc->GetInt32(SWITCH_DROPDOWN);
-				
-				if (bc->GetBool(SWITCH_INHERITNAME))
-					op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)) + " (" + m_objlist[objectIndex] + ")");
-				
-				SwitchObjects(parent, objectIndex);
+				// TODO: Building the list should be done somewhere else
+				if (m_objlist.GetCount() > 0)
+				{
+					// Don't do anything if the generator tick of SwitchObject is not enabled
+					if (!op->GetDeformMode())
+						return true;
+					
+					// Get index of object selected in the dropdown
+					Int32 objectIndex = bc->GetInt32(SWITCH_DROPDOWN);
+					
+					// If 'Inherit Name' is enabled, rename the SwitchObject
+					if (bc->GetBool(SWITCH_INHERITNAME))
+						op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)) + " (" + m_objlist[objectIndex].name + ")");
+					
+					// Switch object visibility
+					SwitchObjects(parent, objectIndex);
+				}
+				else
+				{
+					// If 'Inherit Name' is enabled, rename the SwitchObject
+					if (bc->GetBool(SWITCH_INHERITNAME))
+						op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)));
+					
+					// Select first item in dropdown
+					bc->SetInt32(SWITCH_DROPDOWN, 0);
+				}
 			}
-			else
-			{
-				if (bc->GetBool(SWITCH_INHERITNAME))
-					op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)));
-				
-				bc->SetInt32(SWITCH_DROPDOWN, 0);
-			}
+			break;
 		}
 	}
 	
