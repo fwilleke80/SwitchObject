@@ -10,4 +10,4 @@
 *.pdb
 *.ilk
 *.vcxproj.user
-x64_Debug
+_obj
