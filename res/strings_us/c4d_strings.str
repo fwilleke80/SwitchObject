@@ -1,0 +1,12 @@
+// C4D-StringResource
+// Identifier	Text
+
+STRINGTABLE
+{
+	IDS_OSWITCHOBJ							"Switch";
+	IDS_SWITCH_DROPDOWN					"Show";
+	IDS_SWITCH_NONE							"(None)";
+	IDS_SWITCH_INHERITNAME			"Inherit Object Name";
+	IDS_SWITCH_OBJNAME					"Name";
+	IDS_SWITCH_REMOTELINK				"Remote Link";
+}

@@ -1,0 +1,4 @@
+STRINGTABLE oswitchobject
+{
+	oswitchobject			"Switch Object";
+}
