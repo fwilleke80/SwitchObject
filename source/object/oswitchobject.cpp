@@ -216,23 +216,17 @@ Bool SwitchObject::Message(GeListNode *node, Int32 type, void *data)
 	if (!node)
 		return false;
 	
-	GePrint(String::IntToString(type));
-	
 	BaseObject *op = static_cast<BaseObject*>(node);
 
 	BaseContainer *bc = op->GetDataInstance();
 	if (!bc)
 		return false;
 
-	BaseObject *parent = GetGroupParent(node);
-	if (!parent)
-		return false;
-	
 	switch (type)
 	{
 		case MSG_GETCUSTOMICON:
 		{
-			BuildObjList(parent);
+			BuildObjList(GetGroupParent(node));
 			break;
 		}
 		case MSG_DESCRIPTION_POSTSETPARAMETER:
@@ -259,7 +253,7 @@ Bool SwitchObject::Message(GeListNode *node, Int32 type, void *data)
 						op->SetName(bc->GetString(SWITCH_OBJNAME, GeLoadString(IDS_OSWITCHOBJ)) + " (" + m_objlist[objectIndex].name + ")");
 					
 					// Switch object visibility
-					SwitchObjects(parent, objectIndex);
+					SwitchObjects(GetGroupParent(node), objectIndex);
 				}
 				else
 				{
