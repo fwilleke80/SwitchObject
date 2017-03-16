@@ -125,74 +125,9 @@ a:visited {
       <p>Sometimes you want to create different versions of an object or scene. Like a room with different sets of curtains, a truck with different trailers or just alternative light setups for a scene (e.g. day, evening, night).</p>
       <p>Of course, you could do this with XPresso, creating User Data entries for all your options, connecting lots of nodes to check for the parameters and the visibility values of all lots of hierarchy branches... and if you added another curtain to your room or another trailer to your truck, you would have to worry about wiring the new objects, too, and updating all the User Data entries.</p>
       <p><i>Switch Object</i> makes it really easy for you: No Xpresso, no User Data, no takes, just straight forward switching of object groups.</p>
+
+      <h2>Example</h2>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/RAu5Iglh6nk" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</body>
 </html>
-
-<!--
-<body>
-	<a name="top" id="top"></a>
-	<div class="background">
-		<div class="chapter">
-			<h1>Switch Object Help</h1>
-			<p>A short documentation for the Switch Object.</p>
-			<h3>Contents</h3>
-			<ul>
-				<li><a href="#about">About Switch Object</a></li>
- 				<li><a href="#general">Installation</a></li>
-				<li><a href="#usage">Usage</a></li>
-			</ul>
-		</div>
-
-		<div class="chapter">
-			<h2><a name="about" id="about"></a>About Switch Object</h2>
-      <h3>What is it?</h3> 
-      <p>Sometimes you want to create different versions of an object or scene. Like a room with different sets of curtains, a truck with different trailers or just alternative light setups for a scene (e.g. day, evening, night).</p>
-      <p>Of course, you could do this with XPresso, creating User Data entries for all your options, connecting lots of nodes to check for the parameters and the visibility values of all lots of hierarchy branches... and if you added another curtain to your room or another trailer to your truck, you would have to worry about wiring the new objects, too, and updating all the User Data entries.</p>
-      <p><i>Switch Object</i> makes it really easy for you: No Xpresso, no User Data, just straight forward switching of object groups.</p>
-      <h3>Requirements</h3>
-			<p>This plugin works on Windows (32/64 Bit) and Intel Mac with OSX 10.5 or higher.</p>
-      <p>CINEMA 4D R11.5 or higher is required.</p>
-
-			<p class="toplink"><a href="#top">Back to top</a></p>
-		</div>
-
-		<div class="chapter">
-			<h2><a name="general" id="general"></a>Installation</h2>
-			<p>Just unzip the archive and place the folder &quot;SwitchObject&quot; inside the folder &quot;CINEMA 4D R12/plugins&quot;.</p>
-      <p>When you start CINEMA 4D the next time, the Switch Object will be available from the <i>Plugins</i> menu.</p>
-
-			<p class="toplink"><a href="#top">Back to top</a></p>
-		</div>
-
-		<div class="chapter">
-			<h2><a name="usage" id="usage"></a>Usage</h2>
-			<p>There are two ways of using the <i>Switch Object</i>:</p>
-			<h3>1. Like a Null Object</h3>
-			<p>This is the simplest way of using the <i>Switch Object</i>. Just use a <i>Switch Object</i> instead of a <i>Null Object</i> to group all the objects that should be available for selection.</p>
-      <p><pre>- Switch Object
-  + Cube
-  + Torus
-  + Sphere</pre></p>
-      <p>Now, if you select the <i>Switch Object</i> and take a look into the Attribute Manager. The parameter &quot;Show&quot; automatically offers you all child objects.</p>
-      <p>Choose any item from the list to make it visible, while hiding all the others.</p>
-			<h3>2. Like a remote control</h3>
-			<p>Maybe your hierarchy is more complex, and you don't want to scatter the <i>Switch Objects</i> over the complete scene? No problem, the <i>Switch Object</i> is the answer again.</p>
-      <p>This way you can put your <i>Switch Objects</i> into a central location of your hierarchy, and let them 'remote control' other objects in the scene.</p>
-      <p>Group the objects you want to make available for selection into a <i>Null Object</i>, just as normal. Now create a <i>Switch Object</i> and select it. Drag &amp; Drop the <i>Null Object</i> into the &quot;Remote Link&quot; field in the <i>Switch Object</i>'s attributes.</p>
-      <p><pre>- Switch Object
-...
-...
-- Null Object
-  + Cube
-  + Torus
-  + Sphere</pre></p>
-      <p>If you take a look into the <i>Switch Object</i>'s attributes now, the parameter &quot;Show&quot; offers all child objects of the linked <i>Null Object</i>.</p>
-      <p>Choose any item from the list to make it visible, while hiding all the others.</p>
-
-			<p class="toplink"><a href="#top">Back to top</a></p>
-		</div>
-	</div>
-</body>
-</html>
--->
